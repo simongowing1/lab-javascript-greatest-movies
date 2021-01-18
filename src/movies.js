@@ -14,7 +14,7 @@ return directors
 
 function howManyMovies(array){
  const dramas = array.filter(function(element){
-     if (element.genre.indexOf('Drama') > -1 && element.director == "Steven Spielberg") {
+     if (element.genre.indexOf('Drama') !== -1 && element.director === "Steven Spielberg") {
          return true
      }
  })
@@ -26,10 +26,11 @@ function howManyMovies(array){
 // Iteration 3: All rates average - Get the average of all rates with 2 decimals
 
 function ratesAverage(array) {
-    if (array.length === 0) {
-        return 0;
-    };
+    if (array.length === 0) return 0;
     const sum = array.reduce(function(acc, value){
+        if (array.rate === '' || array.rate === undefined){
+            array.rate = 0;
+        }
         return acc + value.rate
     } ,0)
     finalSum = sum / array.length
@@ -44,7 +45,7 @@ function dramaMoviesRate(moviesArray) {
     let counter = 0;
     
     const dramaRate = moviesArray.filter(function(element){
-        if (element.genre.indexOf('Drama') > -1) {
+        if (element.genre.indexOf('Drama') !== -1) {
             totalRate += element.rate;
             counter ++
         }
@@ -55,12 +56,30 @@ function dramaMoviesRate(moviesArray) {
 // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
 
 function orderByYear(moviesArray) {
-const ordered = moviesArray.sort(function(a, b) {
-    return a.year - b.year
-})
+const ordered = moviesArray.slice().sort(function(a, b) {
+    if(a.year !== b.year) {
+    return a.year - b.year;
+    } else {
+        return a.title.localeCompare(b.title);
+//localCompare was copied from Jan's solution
+
+    }
+});
+return ordered;
 }
 
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
+
+function orderAlphabetically(moviesArray){
+    const ordered = moviesArray.map(function(movie) {
+        return movie.title
+    })
+    ordered.sort(function (a,b){
+    return a.title.localeCompare(b.title);
+})
+return ordered.slice(0, 19)
+}
+
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 
